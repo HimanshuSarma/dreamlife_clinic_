@@ -19,7 +19,7 @@ exports.loginUser = async(req, res) => {
             res.cookie("jwt", token, {
                 expires: new Date(Date.now() + expiry),
                 maxAge: expiry,
-                sameSite: 'strict',
+                sameSite: 'none',
                 secure: true,
                 httpOnly: true
             }).status(200).json({ message: 'Login successfull', expiresIn: expiry });
