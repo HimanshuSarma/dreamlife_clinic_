@@ -19,7 +19,7 @@ require('./cron-jobs/index');
 
 app.use(cors({
     credentials: true,
-    origin: true
+    origin:  ['http://localhost:4000', 'https://dreamlife-clinic.onrender.com']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

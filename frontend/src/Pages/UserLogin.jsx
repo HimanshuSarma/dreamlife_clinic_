@@ -49,10 +49,10 @@ const UserLogin = ({appMessageHandler}) => {
             <h3 style={{fontSize: '1.5rem', color: 'white', width: 'max-content'}}>{userLoginMessage}</h3>
         </BottomRightCard>}
 
-        {loginStateLoading && 
+        {/* {loginStateLoading && 
         <Backdrop>
             <LoadingSpinner></LoadingSpinner>
-        </Backdrop>}
+        </Backdrop>} */}
         <div className='login'>
             <div className="login-wrapper">
               <h1 className="login-header">Please login to continue</h1>
