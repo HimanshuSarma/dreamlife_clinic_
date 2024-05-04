@@ -1,0 +1,35 @@
+.stats {
+    &-page-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    &-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    &-stocks-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    &-stocks-medicine-wrapper {
+        display: flex;
+        gap: 5px;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        background-color: rgba(242, 204, 65, 0.6);
+    }
+    &-secondary-header {
+        font-size: 1.5rem;
+    }
+}
+
+.page-primary-header {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}

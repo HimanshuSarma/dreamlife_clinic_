@@ -1,0 +1,41 @@
+.navbar {
+    background: #4d62b8;
+    width: 100%;
+    padding: 0.75rem 0;
+    &-wrapper {
+        width: 95%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+    }
+    &-home {
+        font-size: 3rem;
+        text-decoration: none;
+        color: rgb(242, 242, 247);
+    }
+    &-control {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    &-btn {
+        width: max-content;
+        border: none;
+        border-radius: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 2rem;
+        text-transform: uppercase;
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    &-link {
+        text-decoration: none;
+        color: black;
+    }
+}

@@ -1,0 +1,14 @@
+@import "./abstract/mixin";
+@import "./abstract/variables";
+@import "./basic/basic";
+@import "./main/navbar";
+@import "./main/home";
+@import "./main/layout";
+@import "./main/add";
+@import "./main/edit";
+@import "./main/login";
+@import "./main/stats";
+@import "./main/sales";
+input:focus {
+    outline: none;
+}

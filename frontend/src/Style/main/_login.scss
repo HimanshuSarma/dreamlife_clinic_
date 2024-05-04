@@ -1,0 +1,61 @@
+.login {
+    min-height: calc(100vh - 100px);
+    width: 100%;
+    &-wrapper {
+        padding: 10rem;
+        @include Flex;
+        gap: 3rem;
+        flex-direction: column;
+    }
+    &-header {
+        font-size: 3rem;
+        text-transform: capitalize;
+        font-weight: 500;
+        color: black;
+    }
+    &-form {
+        padding: 5rem;
+        border: 1px solid grey;
+        border-radius: 1rem;
+        box-shadow: 1rem 1rem 3rem 2px rgba(0, 0, 0, .1);
+        @include Flex;
+        gap: 2rem;
+        flex-direction: column;
+    }
+    &-input {
+        min-width: 40rem;
+        height: 4rem;
+        border: 1px solid rgba(0, 0, 0, .4);
+        padding: .3rem .5rem;
+        font-size: 1.7rem;
+        outline: none;
+    }
+    &-btn {
+        border: none;
+        outline: none;
+        padding: 1rem 2rem;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        color: white;
+        font-weight: 600;
+        background: rgb(81, 106, 214);
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 550px) {
+    .login {
+        width: 90%;
+        margin: 0 auto;
+        &-wrapper {
+            padding: 5rem 0;
+        }
+        &-input {
+            width: 90%;
+            min-width: 0;
+        }
+        &-form {
+            padding: 2rem 1rem;
+        }
+    }
+}

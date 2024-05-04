@@ -1,0 +1,1 @@
+require('./medicines/index');

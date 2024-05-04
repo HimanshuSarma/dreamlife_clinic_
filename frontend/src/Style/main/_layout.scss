@@ -1,0 +1,303 @@
+.layout {
+    min-height: 100vh;
+    &-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        @include Flex;
+        flex-direction: column;
+        gap: 3rem;
+        position: relative;
+    }
+    &-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &-input {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        &:focus {
+            outline: none;
+        }
+    }
+    &-amount {
+        padding: 0.5rem 1rem;
+    }
+    &-icon {
+        width: 20px;
+        aspect-ratio: 1/1;
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    &-button {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+    }
+    &-btn {
+        border: none;
+        outline: none;
+        padding: 1rem;
+        height: 3rem;
+        @include Flex;
+        font-size: 1.4rem;
+        font-weight: 600;
+        background: #274a94;
+        color: white;
+        cursor: pointer;
+    }
+    &-text {
+        font-size: 1.5rem;
+    }
+    &-links {
+        text-decoration: none;
+        font-weight: 600;
+        color: white;
+    }
+    &-control {
+        padding: 3rem 0;
+        display: flex;
+        justify-content: center;
+    }
+    &-searchbar {
+        outline: none;
+        height: 4rem;
+        min-width: 40rem;
+        font-size: 2rem;
+        padding: 0 2rem;
+    }
+    &-search {
+        border: none;
+        outline: none;
+        padding: 0.85rem 3rem;
+        background: #668cdf;
+        color: white;
+        text-transform: uppercase;
+        font-size: 1.5rem;
+        cursor: pointer;
+        &-select-wrapper {
+            display: flex;
+        }
+        &-wrapper {
+            display: flex;
+        }
+    }
+    &-close {
+        &-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+            width: 30px;
+            height: 30px;
+            background-color: rgb(215, 213, 211);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    }
+    &-search-results {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+        &-heading {
+            font-size: 2.25rem;
+        }
+    }
+    &-dropdown {
+        padding: 0.25rem 0.5rem;
+    }
+    &-heading {
+        font-size: 3rem;
+        color: darkblue;
+        text-transform: capitalize;
+        font-weight: 700;
+        text-align: center;
+    }
+    &-add-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+    }
+    &-container {
+        position: relative;
+        padding: 2rem 0;
+    }
+    &-table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        // min-width: 60rem;
+        &-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+    }
+    &-tableheading {
+        // padding: 1rem;
+        width: 100%;
+        text-align: left;
+    }
+    &-sales {
+        &-row {
+            text-align: center;
+        }
+        &-header {
+            width: max-content;
+        }
+        &-searched {
+            &-names {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                position: absolute;
+                width: 100%;
+                top: 105%;
+                left: 0;
+                padding: 0.5rem 0.75rem;
+                background-color: rgb(49, 47, 47);
+                box-shadow: 7px 7px 10px rgba(200, 196, 196, 0.2);
+                z-index: 100;
+            }
+            &-name {
+                font-size: 1.25rem;
+                font-weight: 500;
+                color: rgb(241, 232, 214);
+                cursor: pointer;
+            }
+        }
+        &-tabledata-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+    }
+    &-tableheader {
+        padding: 1.2rem 1.5rem;
+        font-size: 2.2rem;
+        font-weight: 500;
+        color: white;
+        text-align: center;
+        background-color: #274a94;
+        &-name {
+            max-width: 15rem;
+        }
+    }
+    &-tablebody {
+        tr {
+            border-bottom: 1px solid #dddd;
+        }
+    }
+    &-tabledata {
+        text-align: center;
+        padding: 0.5rem 1rem;
+        font-size: 2rem;
+        font-weight: normal;
+    }
+}
+
+@media (max-width: 1000px) {
+    .layout {
+        &-sale-product {
+            &-table {
+                margin-bottom: 0;
+            }
+            &-row {
+                margin-bottom: 0;
+            }
+        }
+        &-table-sales-wrapper {
+            border: 1px solid#274a94;
+            margin-bottom: 2rem;
+        }
+        &-tableheading {
+            display: none;
+        }
+        &-icon-wrapper {
+            & svg,
+            & a svg {
+                width: 40px !important;
+                height: 25px !important;
+            }
+        }
+        &-icon-wrapper {
+            display: flex;
+            justify-content: flex-end;
+        }
+        &-main {
+            width: 100%;
+        }
+        &-container,
+        &-table-wrapper {
+            width: 85%;
+        }
+        &-control {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+    }
+    table  {
+        th {
+            display: none;
+        }
+
+        td {
+            display: flex;
+            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 2500rem !important;
+            & * {
+                width: 40% !important;
+                justify-self: flex-end !important;
+                text-align: right !important;
+            }
+            &::before {
+                content: attr(data-label);
+                // position: absolute;
+                text-align: left;
+                width: 50%;
+                height: 100%;
+            }
+        }
+        
+        tr {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            width: 100%;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(47, 46, 46, 0.3) !important;
+        }
+    }
+}
+
+@media (max-width: 550px) {
+    .layout {
+        &-control {
+            width: 90%;
+            margin: 0 auto;
+        }
+        &-search {
+            &-select-wrapper {
+                width: 100%;
+                & select {
+                    width: 50%;
+                }
+            }
+            &-wrapper {
+                width: 90%;
+                flex-direction: column;
+            }
+        }
+        &-searchbar {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+}

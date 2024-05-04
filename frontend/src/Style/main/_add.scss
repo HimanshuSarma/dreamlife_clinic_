@@ -1,0 +1,41 @@
+.add {
+    width: 100%;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding: 3rem 0;
+    &-header {
+        font-size: 4rem;
+        color: crimson;
+        font-weight: 500;
+        text-align: center;
+    }
+    &-form {
+        @include Flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    &-input {
+        border: 1px solid #99d9d9;
+        outline: none;
+        height: 4rem;
+        border-radius: .1rem;
+        padding: .3rem .5rem;
+        font-size: 2rem;
+        font-weight: 500;
+        min-width: 40rem;
+    }
+    &-btn {
+        border: none;
+        outline: none;
+        padding: 1rem 2rem;
+        background: #4d8fe6;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        color: white;
+        font-size: 700;
+        cursor: pointer;
+    }
+}
