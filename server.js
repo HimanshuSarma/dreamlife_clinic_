@@ -20,7 +20,7 @@ require('./cron-jobs/index');
 app.use(cors({
     credentials: true,
     origin:  ['http://localhost:4000',
-    'https://663609c52788c4d5631f41f3--transcendent-wisp-4c8789.netlify.app/']
+    'https://663609c52788c4d5631f41f3--transcendent-wisp-4c8789.netlify.app']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
