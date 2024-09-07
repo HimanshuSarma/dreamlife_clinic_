@@ -10,48 +10,80 @@ exports.createMedicineController = {
                 name: joi.string().required(),
                 batches: joi.array().items(
                     joi.object({
-                        MRP: joi.number().min(1).required(),
-                        costPrice: joi.number().min(1).required(),
+                        MRP: joi.number().min(1),
+                        costPrice: joi.number().min(1),
                         discount: joi.number().min(1),
                         expDate: joi.string().required()
                             .custom((value, helper) => {
-                                const dateParsed= new Date(Date.parse(value));
-                                if(dateParsed.toISOString() === value){
-                                    return true;
+                                const dateParsed = value?.split('-');
+                                const year = parseInt(dateParsed?.[0]);
+                                const month = parseInt(dateParsed?.[1]);
+                                const dateOfMonth = parseInt(dateParsed?.[2]);
+                    
+                                console.log(dateOfMonth, 'dateOfMonth');
+                        
+                                if (dateOfMonth >= 1 && dateOfMonth <= 31 
+                                && month >= 1 && month <= 12
+                                && year >= 2000) {
+                                return true;
                                 } else {
-                                    return helper.message(`expDate must be in UTC format`);
+                                console.log('expDateError')
+                                return helper?.message(`expDate is either invalid or not in the format yyyy-mm-dd`);
                                 }
-                            }),
-                        stock: joi.number().min(1).required()
+                            }), 
+                            // .custom((value, helper) => {
+                            //     const dateParsed= new Date(Date.parse(value));
+                            //     if(dateParsed.toISOString() === value){
+                            //         return true;
+                            //     } else {
+                            //         return helper.message(`expDate must be in UTC format`);
+                            //     }
+                            // }),
+                        stock: joi.number().min(1).required(),
                     })
                 ).min(1),
+                shelves: joi.array().items(
+                    joi.string()
+                ),
                 category: joi.string(),
             });
 
             const newBatchSchema = joi.object({
-                medicineId: joi.string().min(12).required(),
+                name: joi.string().required(),
                 batches: joi.array().items(
                     joi.object({
-                        MRP: joi.number().min(1).required(),
-                        costPrice: joi.number().min(1).required(),
+                        MRP: joi.number().min(1),
+                        costPrice: joi.number().min(1),
                         discount: joi.number().min(1),
                         expDate: joi.string().required()
                             .custom((value, helper) => {
-                                const dateParsed= new Date(Date.parse(value));
-                                if(dateParsed.toISOString() === value){
-                                    return true;
+                                const dateParsed = value?.split('-');
+                                const year = parseInt(dateParsed?.[0]);
+                                const month = parseInt(dateParsed?.[1]);
+                                const dateOfMonth = parseInt(dateParsed?.[2]);
+                    
+                                console.log(dateOfMonth, 'dateOfMonth');
+                        
+                                if (dateOfMonth >= 1 && dateOfMonth <= 31 
+                                && month >= 1 && month <= 12
+                                && year >= 2000) {
+                                return true;
                                 } else {
-                                    return helper.message(`expDate must be in UTC format`);
+                                console.log('expDateError')
+                                return helper?.message(`expDate is either invalid or not in the format yyyy-mm-dd`);
                                 }
-                            }),
-                        stock: joi.number().min(1).required()
+                            }), 
+                        stock: joi.number().min(1).required(),
                     })
                 ).min(1),
+                shelves: joi.array().items(
+                    joi.string()
+                ),
             });
 
-            if (req?.query?.medicineId) {
+            if (req?.query?.name) {
                 await newBatchSchema.validateAsync({
-                    medicineId: req?.query?.medicineId,
+                    name: req?.query?.name,
                     ...req?.body,
                 });
             } else {
@@ -81,12 +113,19 @@ exports.createMedicineController = {
 
             console.log(req?.query);
 
-            if (req?.query?.medicineId) {
+            if (req?.query?.name) {
                 newMedicineBatch = await Medicine.findOneAndUpdate(
-                    { _id: new mongoose.Types.ObjectId(req?.query?.medicineId) },
+                    { name: req?.query?.name },
                     {
+                        $push: {
+                            batches: {
+                                $each: req?.body?.batches 
+                            }   
+                        },
                         $addToSet: {
-                            batches: req?.body?.batches
+                            shelves: {
+                                $each: req?.body?.shelves
+                            }
                         }
                     },
                     { new: true }
@@ -98,8 +137,7 @@ exports.createMedicineController = {
                         message: 'Medicine batch created successfully.' 
                     });
                 } else {
-                    throw new Error(`Some error occured in adding the batch(Probably no medicine found
-                    for the given constraints)!`);
+                    throw new Error(`Some error occured in adding the batch(Probably no medicine found)!`);
                 }
             } else {
                 newMedicine = await Medicine.create({

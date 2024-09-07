@@ -16,7 +16,7 @@ const {
 
 nodeCron.schedule('0 30 18 * * *', async () => {
     // setInterval(() => {
-    //     (async () => {
+        // (async () => {
             try {
                 const getRunawayDate = (runwayDays) => {
                     const currDate = new Date();
@@ -57,7 +57,7 @@ nodeCron.schedule('0 30 18 * * *', async () => {
                                 medicineExpiryNotificationParams.message +=
                                     `${handlerResponse?.payload?.medicines?.[i]?.name}, Batch ${j + 1}. exp date: ${
                                         moment(handlerResponse?.payload?.medicines?.[i]?.batches?.[j]?.expDate)
-                                            ?.format('MMMM Do YYYY, h:mm:ss a')
+                                            ?.format('MMMM Do YYYY')
                                     }\n`;
                             }
                         }
@@ -86,6 +86,6 @@ nodeCron.schedule('0 30 18 * * *', async () => {
             } catch (err) {
                 console.log(err, 'medicineExpiryAlert');
             }
-    //     })();
+        // })();
     // }, 5000);
 });

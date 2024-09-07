@@ -22,10 +22,15 @@ const medicineSchema = new mongoose.Schema({
         {
             stock: { type: mongoose.Schema.Types.Number, required: true },
             expDate: { type: mongoose.Schema.Types.String, required: true },
-            MRP: { type: mongoose.Schema.Types.Number, required: true },
-            costPrice: { type: mongoose.Schema.Types.Number, required: true },
+            MRP: { type: mongoose.Schema.Types.Number },
+            costPrice: { type: mongoose.Schema.Types.Number },
             discount: { type: mongoose.Schema.Types.Number },
             isExpiryNotificationSent: { type: mongoose.Schema.Types.Boolean }
+        }
+    ],
+    shelves: [
+        {
+            type: mongoose.Schema.Types.String
         }
     ]
 })

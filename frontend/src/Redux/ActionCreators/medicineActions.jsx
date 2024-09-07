@@ -148,14 +148,14 @@ export const postMedicine = ({
 
                 if (failureCallback) {
                     failureCallback({
-                        errorMessage: postMedicineReq?.data?.errorMessage
+                        error: postMedicineReq
                     });
                 }
             }
         } catch (err) {
             console.log(err, 'error');
             failureCallback({
-                errorMessage: err?.response?.data?.errorMessage || err?.message || 'Some error occured'
+                error: err?.response
             });
         }
     }

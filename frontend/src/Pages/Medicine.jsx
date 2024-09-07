@@ -33,7 +33,8 @@ const Medicine = () => {
         discount: '',
         expDate: '',
         stock: '',
-      }]
+      }],
+      shelves: ''
     }
   }, []);
 
@@ -44,21 +45,15 @@ const Medicine = () => {
       }),
     batches: joi.array().items(
       joi.object({
-        MRP: joi.number().min(1).required()
-          .messages({
-            "any.required": "MRP is required"
-          }),
-        costPrice: joi.number().min(1).required()
-          .messages({
-            "any.required": "Cost price is required"
-          }),
+        MRP: joi.number().min(1),
+        costPrice: joi.number().min(1),
         discount: joi.number().min(1),
         expDate: joi.string().required()
           .custom((value, helper) => {
-            const dateParsed = value?.split('/');
-            const dateOfMonth = parseInt(dateParsed?.[0]);
+            const dateParsed = value?.split('-');
+            const year = parseInt(dateParsed?.[0]);
             const month = parseInt(dateParsed?.[1]);
-            const year = parseInt(dateParsed?.[2]);
+            const dateOfMonth = parseInt(dateParsed?.[2]);
 
             console.log(dateOfMonth, 'dateOfMonth');
     
@@ -68,7 +63,7 @@ const Medicine = () => {
               return true;
             } else {
               console.log('expDateError')
-              return helper?.message(`expDate is either invalid or not in the format dd/mm/yyyy`);
+              return helper?.message(`expDate is either invalid or not in the format yyyy-mm-dd`);
             }
           })
           .messages({
@@ -79,7 +74,16 @@ const Medicine = () => {
             "any.required": "stock is required"
           }),
       })
-    ).min(1)
+    ).min(1),
+    shelves: joi.string()
+      .custom((value, helper) => {
+        const splittedShelves = value?.split(',');
+        for (let i = 0; i < splittedShelves?.length; i++) {
+          if (splittedShelves?.[i]?.trim() === '') {
+            return helper?.message(`Please check all the shelf names`);
+          }
+        }
+      })
   });
 
   const newMedicine = useSelector(store => store.newMedicine);
@@ -107,18 +111,34 @@ const Medicine = () => {
     onSubmit: (values) => {
       console.log('onSubmit', values);
 
+      const valuesCpy = {
+        ...values
+      };
+
       if (tab === "AddMedicine") {
+
+        const shelves = [];
+
+        const splittedShelves = valuesCpy?.shelves?.split(',');
+        for (let i = 0; i < splittedShelves?.length; i++) {
+          shelves.push(splittedShelves?.[i]?.trim());
+        }
+
         const payload = {
-          ...values,
-          batches: values?.batches?.map((currBatch) => {
-            if (!currBatch?.discount) {
-              delete currBatch?.discount;
+          ...valuesCpy,
+          batches: valuesCpy?.batches?.map((currBatch) => {
+            const currBatchCpy = {};
+            for (let i = 0; i < Object.entries(currBatch).length; i++) {
+              if (Object.entries(currBatch)?.[i]?.[1] !== '') {
+                currBatchCpy[Object.entries(currBatch)?.[i]?.[0]] = Object.entries(currBatch)?.[i]?.[1];
+              }
             }
+
             return {
-              ...currBatch,
-              expDate: createDateFromDateString(currBatch?.expDate)?.toISOString?.()
+              ...currBatchCpy,
             }
-          })
+          }),
+          shelves
         }
 
         dispatch(
@@ -126,6 +146,12 @@ const Medicine = () => {
             payload,
             successCallback: () => {
               toast.success("Medicine added!");
+            },
+            failureCallback: ({
+              error
+            }) => {
+              console.log(error, 'failureCallback');
+              toast.error(error?.data?.errorMessage);
             },
             afterResponseCallback: ({
               payload
@@ -135,31 +161,46 @@ const Medicine = () => {
           })
         )
       } else {
+
+        const shelves = [];
+
+        const splittedShelves = valuesCpy?.shelves?.split(',');
+        for (let i = 0; i < splittedShelves?.length; i++) {
+          shelves.push(splittedShelves?.[i]?.trim());
+        }
+
         const payload = {
-          batches: values?.batches?.map((currBatch) => {
-            if (!currBatch?.discount) {
-              delete currBatch?.discount;
+          batches: valuesCpy?.batches?.map((currBatch) => {
+
+            const currBatchCpy = {};
+
+            for (let i = 0; i < Object.entries(currBatch).length; i++) {
+              if (Object.entries(currBatch)?.[i]?.[1] !== '') {
+                currBatchCpy[Object.entries(currBatch)?.[i]?.[0]] = Object.entries(currBatch)?.[i]?.[1];
+              }
             }
+
             return {
-              ...currBatch,
-              expDate: createDateFromDateString(currBatch?.expDate)?.toISOString?.()
+              ...currBatchCpy,
             }
-          })
+          }),
+          shelves
         }
 
         dispatch(
           postMedicine({
             payload,
             params: {
-              medicineId: selectedMedicine?._id,
+              name: selectedMedicine?.name || valuesCpy?.name,
             },
             successCallback: () => {
               toast.success("Medicine batch added!");
+              setSelectedMedicine(null);
             },
             failureCallback: ({
-              errorMessage
+              error
             }) => {
-              toast.error(errorMessage || "Some error occured!");
+              toast.error(error?.data?.errorMessage || "Some error occured");
             },
             afterResponseCallback: ({
               payload
@@ -444,6 +485,28 @@ const Medicine = () => {
                       </Box>
 
                       <Box>
+                        <InputLabel htmlFor={`shelves`}>
+                          Shelves
+                        </InputLabel>
+                        <Input 
+                          type="text" 
+                          id={`shelves`}
+                          name={`shelves`}
+                          placeholder='Shelf names (comma separated)'
+                          value={values?.shelves}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          variant='outlined'
+                          size='lg'
+                        />
+                        {touched?.shelves && errors?.shelves ? (
+                          <Typography>
+                            {errors?.shelves}
+                          </Typography>
+                        ) : null}
+                      </Box>
+
+                      <Box>
                         <InputLabel htmlFor={`batches[${currBatchIdx}].expDate`}>
                           Expiry Date
                         </InputLabel>
@@ -451,7 +514,7 @@ const Medicine = () => {
                           type="text" 
                           id={`batches[${currBatchIdx}].expDate`}
                           name={`batches[${currBatchIdx}].expDate`}
-                          placeholder='dd/mm/yyyy'
+                          placeholder='yyyy-mm-dd'
                           value={currBatch?.expDate}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -669,6 +732,28 @@ const Medicine = () => {
                       </Box>
 
                       <Box>
+                        <InputLabel htmlFor={`shelves`}>
+                          Shelves
+                        </InputLabel>
+                        <Input 
+                          type="text" 
+                          id={`shelves`}
+                          name={`shelves`}
+                          placeholder='Shelf names (comma separated)'
+                          value={values?.shelves}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          variant='outlined'
+                          size='lg'
+                        />
+                        {touched?.shelves && errors?.shelves ? (
+                          <Typography>
+                            {errors?.shelves}
+                          </Typography>
+                        ) : null}
+                      </Box>
+
+                      <Box>
                         <InputLabel htmlFor={`batches[${currBatchIdx}].expDate`}>
                           Expiry Date
                         </InputLabel>
@@ -676,7 +761,7 @@ const Medicine = () => {
                           type="text" 
                           id={`batches[${currBatchIdx}].expDate`}
                           name={`batches[${currBatchIdx}].expDate`}
-                          placeholder='dd/mm/yyyy'
+                          placeholder='yyyy-mm-dd'
                           value={currBatch?.expDate}
                           onChange={handleChange}
                           onBlur={handleBlur}
